@@ -3,44 +3,31 @@
 文系卒・現役エンジニアが、コンピュータサイエンス専攻の大学生が学ぶ内容を自習するための教科書。
 **この教科書をすべて読み終えると、CS 学部卒業生と同等の知識体系が手に入る** ことを目指して構成されている。
 
-## 構成
+## 読み方
 
-- [`cs-curriculum.md`](./cs-curriculum.md) — カリキュラムの全体像（4 層構造のロードマップ）
-- [`textbook/`](./textbook/) — 各章の本文（読めば理解できるよう、初学者向けに書き下ろした教科書）
+| 環境 | URL / 場所 |
+|---|---|
+| **Web (PC・スマホ)** | <https://zakioka-pirori.github.io/MyNote/> |
+| **GitHub 上で読む** | [`docs/`](./docs/) ディレクトリ |
+| **ローカル** | `pip install -r requirements.txt && mkdocs serve` |
 
-## 教科書の読み方
+Web 版は MkDocs Material で組まれており、検索・ダークモード・数式レンダリング・スマホ最適化レイアウトに対応している。
 
-1. **第 1 層（数学的・論理的基礎）から順に読む** のが王道。ただし第 2 層を読みながら戻ってくる、という進め方でも問題ない。
-2. **手を動かしながら読む**。コード例は実際にタイプして実行する。証明は紙とペンで追う。
-3. **章末の「演習」を必ず解く**。解けない場合は本文に戻る。
-4. **わからない単語は飛ばさず、その場で調べる**。教科書内の用語はリンク化されている。
+## カリキュラム構成（4 層）
 
-## 章一覧
+1. [**第 1 層 数学・論理基礎**](docs/textbook/01-foundations/) — 離散数学 / 線形代数 / 微積分 / 確率統計 / 論理
+2. [**第 2 層 コア科目**](docs/textbook/02-core/) — プログラミング言語 / アルゴリズム / 計算理論 / アーキテクチャ / OS / ネットワーク / DB / コンパイラ / ソフトウェア工学
+3. [**第 3 層 応用・発展**](docs/textbook/03-applied/) — セキュリティ / 分散システム / AI・機械学習 / HCI / グラフィックス
+4. [**第 4 層 選択・先端**](docs/textbook/04-electives/) — NLP / CV / 強化学習 / 形式手法 / HPC / 量子計算 など
 
-### 第 1 層: 数学的・論理的基礎
-- [01. 離散数学](./textbook/01-foundations/01-discrete-math.md)
-- [02. 線形代数](./textbook/01-foundations/02-linear-algebra.md)
-- [03. 微積分](./textbook/01-foundations/03-calculus.md)
-- [04. 確率と統計](./textbook/01-foundations/04-probability-statistics.md)
-- [05. 計算のための論理](./textbook/01-foundations/05-logic.md)
+詳細なロードマップは [`docs/cs-curriculum.md`](./docs/cs-curriculum.md)、教科書全体の入口は [`docs/index.md`](./docs/index.md)。
 
-### 第 2 層: コア科目
-- [06. プログラミング言語パラダイム](./textbook/02-core/01-programming-paradigms.md)
-- [07. データ構造とアルゴリズム](./textbook/02-core/02-data-structures-algorithms.md)
-- [08. 計算理論](./textbook/02-core/03-theory-of-computation.md)
-- [09. コンピュータアーキテクチャ](./textbook/02-core/04-computer-architecture.md)
-- [10. オペレーティングシステム](./textbook/02-core/05-operating-systems.md)
-- [11. コンピュータネットワーク](./textbook/02-core/06-networking.md)
-- [12. データベース](./textbook/02-core/07-databases.md)
-- [13. コンパイラと言語処理系](./textbook/02-core/08-compilers.md)
-- [14. ソフトウェア工学](./textbook/02-core/09-software-engineering.md)
+## GitHub Pages 初回セットアップ
 
-### 第 3 層: 応用・発展
-- [15. セキュリティ](./textbook/03-applied/01-security.md)
-- [16. 分散システム](./textbook/03-applied/02-distributed-systems.md)
-- [17. 人工知能と機械学習](./textbook/03-applied/03-ai-ml.md)
-- [18. ヒューマンコンピュータインタラクション](./textbook/03-applied/04-hci.md)
-- [19. コンピュータグラフィックス](./textbook/03-applied/05-graphics.md)
+リポジトリオーナーが 1 度だけ実施する:
 
-### 第 4 層: 選択・先端領域
-- [20. 選択トピック概観](./textbook/04-electives/01-overview.md)
+1. **Settings → Pages** を開く
+2. **Source** を「**GitHub Actions**」に設定する
+3. `main` にマージするか、Actions タブから `Deploy MkDocs site` を手動実行すると初回デプロイが走る
+
+以降は `main` への push 毎に自動再デプロイされる。
