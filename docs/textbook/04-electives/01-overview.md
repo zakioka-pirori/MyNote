@@ -17,6 +17,51 @@
 
 ---
 
+第 4 層が扱う領域の全体像:
+
+```mermaid
+mindmap
+  root((第4層<br/>先端 CS))
+    NLP
+      LLM/ChatGPT
+      機械翻訳
+      RAG
+    CV
+      画像認識
+      自動運転
+      AlphaFold
+    強化学習
+      AlphaGo
+      ロボット
+      RLHF
+    形式手法
+      Coq/Lean
+      モデル検査
+    HPC/並列
+      MPI
+      富岳
+    量子計算
+      Shor
+      量子優位性
+    暗号
+      ZK 証明
+      準同型
+    ブロックチェーン
+      Bitcoin
+      DeFi
+    バイオ
+      ゲノム解析
+    組込
+      RTOS
+      IoT
+    ロボティクス
+      SLAM
+      ROS
+    倫理
+      AI 法
+      公平性
+```
+
 ## 20.1 自然言語処理 (NLP)
 
 人間の言語をコンピュータに理解・生成させる分野。

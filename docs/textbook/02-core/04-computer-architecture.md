@@ -201,17 +201,25 @@ add  x12, x10, x11 # x12 = x10 + x11 = 8
 
 教育用の RISC-V を例に:
 
+```mermaid
+graph LR
+    IF[IF<br/>Fetch<br/>命令取得] --> ID[ID<br/>Decode<br/>命令解読]
+    ID --> EX[EX<br/>Execute<br/>ALU 計算]
+    EX --> MEM[MEM<br/>Memory<br/>load/store]
+    MEM --> WB[WB<br/>Write Back<br/>結果書戻]
+
+    style IF fill:#bbdefb
+    style ID fill:#c5e1a5
+    style EX fill:#ffe0b2
+    style MEM fill:#f8bbd0
+    style WB fill:#d1c4e9
+```
+
 1. **IF (Instruction Fetch)**: PC から命令を取得
 2. **ID (Instruction Decode)**: 命令を解読、レジスタ読み出し
 3. **EX (Execute)**: ALU で計算
 4. **MEM (Memory Access)**: load/store ならメモリアクセス
 5. **WB (Write Back)**: 結果をレジスタに書き戻す
-
-```
-┌─────┐  ┌─────┐  ┌─────┐  ┌─────┐  ┌─────┐
-│ IF  │→│ ID  │→│ EX  │→│ MEM │→│ WB  │
-└─────┘  └─────┘  └─────┘  └─────┘  └─────┘
-```
 
 毎サイクル、命令が 1 つ進みます。
 
@@ -229,12 +237,15 @@ add  x12, x10, x11 # x12 = x10 + x11 = 8
 
 ```
 時刻 →
-命令1: IF ID EX MEM WB
-命令2:    IF ID EX  MEM WB
-命令3:       IF ID  EX  MEM WB
-命令4:          IF  ID  EX  MEM WB
-命令5:              IF  ID  EX  MEM WB
+命令1:  IF  ID  EX  MEM WB
+命令2:      IF  ID  EX  MEM WB
+命令3:          IF  ID  EX  MEM WB
+命令4:              IF  ID  EX  MEM WB
+命令5:                  IF  ID  EX  MEM WB
+        └───────── 1 サイクルに 1 命令完成 (理想時 CPI = 1) ─────────┘
 ```
+
+「**工場の流れ作業**」と同じ発想。組立ラインで各工程が並行して動く。
 
 工場の流れ作業と同じ発想。
 

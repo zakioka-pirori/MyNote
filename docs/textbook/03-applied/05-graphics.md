@@ -243,21 +243,29 @@ z で割る (perspective divide) ことで遠近感が出る。
 
 GPU は **固定 + プログラマブル** な段階で動きます:
 
+```mermaid
+graph TD
+    VB[頂点バッファ<br/>三角形メッシュ]
+    VS[Vertex Shader<br/>プログラマブル<br/>頂点座標変換]
+    TS[Tessellation / Geometry<br/>オプション]
+    RS[ラスタライズ<br/>三角形 → ピクセル]
+    FS[Fragment Shader<br/>プログラマブル<br/>ピクセル色決定]
+    OM[出力結合<br/>Blend / Z-test]
+    FB[フレームバッファ<br/>画面に表示]
+
+    VB --> VS
+    VS --> TS
+    TS --> RS
+    RS --> FS
+    FS --> OM
+    OM --> FB
+
+    style VS fill:#c5e1a5
+    style FS fill:#c5e1a5
+    style FB fill:#ffe0b2
 ```
-頂点バッファ
-    ↓
-Vertex Shader (プログラマブル)
-    ↓
-[Tessellation, Geometry Shader] (オプション)
-    ↓
-ラスタライズ (三角形 → ピクセル)
-    ↓
-Fragment Shader (プログラマブル)
-    ↓
-出力結合 (Blend, Z-test)
-    ↓
-フレームバッファ
-```
+
+緑のステージが **プログラマブル**（シェーダで書ける）。固定ステージは GPU が自動で実行。
 
 ### 19.6.1 頂点シェーダ
 

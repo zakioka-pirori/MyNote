@@ -117,16 +117,18 @@ CPU を別プロセス/スレッドに切り替える操作。
 
 ### 10.2.5 プロセスの状態
 
-```
-        +─────────+
-+──────>│ Running │────────+ (タイマ切れ / I/O 開始)
-│       +────┬────+        v
-│ (再開)     │ (終了)     +─────────+
-│            v            │ Waiting │
-│       +───────────+      +────┬────+
-+──────+ Ready     │<───────────+ (I/O 完了)
-        +───────────+
-        ↑ (preempt)
+```mermaid
+stateDiagram-v2
+    [*] --> Ready: 生成
+    Ready --> Running: スケジュール
+    Running --> Ready: タイマー切れ
+    Running --> Waiting: I/O 開始
+    Waiting --> Ready: I/O 完了
+    Running --> [*]: 終了
+
+    note right of Running: CPU を使っている
+    note left of Ready: CPU 待ち
+    note right of Waiting: I/O 完了待ち
 ```
 
 ---
@@ -176,12 +178,21 @@ counter = counter + 1;   // ← 非アトミック！
 ```
 
 実際は:
+```mermaid
+sequenceDiagram
+    participant A as Thread A
+    participant M as メモリ (counter)
+    participant B as Thread B
+
+    Note over M: counter = 5
+    A->>M: read (5)
+    B->>M: read (5)
+    A->>M: write (5+1=6)
+    B->>M: write (5+1=6)
+    Note over M: counter = 6 (期待 7 なのに!)
 ```
-Thread A:  read  counter (=5)
-Thread B:  read  counter (=5)
-Thread A:  write counter (=6)
-Thread B:  write counter (=6)   ← 期待は 7 なのに 6
-```
+
+両スレッドが「**5 を読んでから書く**」順序が交差して、結果が 1 つ失われています。これが **競合状態 (race condition)**。
 
 これが **競合状態**。多くのバグの原因。
 

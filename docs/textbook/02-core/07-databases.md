@@ -249,6 +249,35 @@ users 表:
 | 構造 | 用途 |
 |---|---|
 | B+ 木 | 範囲・等価検索とも $O(\log n)$。RDBMS の主役 |
+
+B+ 木のイメージ:
+
+```mermaid
+graph TD
+    Root["[20, 50]"]
+    L1["[5, 10, 15]"]
+    L2["[25, 30, 40]"]
+    L3["[55, 70, 90]"]
+    Root --> L1
+    Root --> L2
+    Root --> L3
+    Leaf1["5→10→15→"] --> Leaf2["20→25→30→40→"]
+    Leaf2 --> Leaf3["50→55→70→90"]
+    L1 -.-> Leaf1
+    L2 -.-> Leaf2
+    L3 -.-> Leaf3
+
+    style Root fill:#ffe0b2
+    style L1 fill:#bbdefb
+    style L2 fill:#bbdefb
+    style L3 fill:#bbdefb
+    style Leaf1 fill:#c5e1a5
+    style Leaf2 fill:#c5e1a5
+    style Leaf3 fill:#c5e1a5
+```
+
+葉ノード同士が **横にリンク** されているのが B+ 木の特徴。範囲スキャンが超高速 (`WHERE x BETWEEN 20 AND 50` が一気に取れる)。
+
 | ハッシュ | 等価のみ、$O(1)$ 平均 |
 | 全文 (GIN/GiST) | 部分文字列・自然言語 |
 | ビットマップ | カーディナリティ低い列、列指向 DB |
@@ -362,7 +391,22 @@ UPDATE accounts SET balance = balance + 1000 WHERE id = 2;
 COMMIT;
 ```
 
-途中で落ちたら **両方ロールバック**。「片方だけ引かれて消える」は許されない。
+```mermaid
+sequenceDiagram
+    participant App as アプリ
+    participant DB as DB
+    Note over DB: 田中: 5000円, 山田: 3000円
+
+    App->>DB: BEGIN
+    App->>DB: 田中 -= 1000
+    Note over DB: 田中: 4000円, 山田: 3000円
+    App->>DB: 山田 += 1000
+    Note over DB: 田中: 4000円, 山田: 4000円
+    App->>DB: COMMIT ✅
+    Note over DB: 確定！合計 8000 円維持
+```
+
+途中で落ちたら **両方ロールバック**。「片方だけ引かれて消える」は許されない。これが ACID の **A (Atomicity)**。
 
 ### 12.8.3 分離レベル
 

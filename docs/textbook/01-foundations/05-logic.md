@@ -128,6 +128,19 @@ $$(p \land q) \lor (\neg p \land r) \lor (q \land r)$$
 
 論理結合子は AND・OR・NOT ゲートに対応。
 
+論理結合子 AND・OR・NOT はそのままハードウェアのゲートに対応します:
+
+```
+  AND ゲート          OR ゲート           NOT ゲート
+                      
+  p ──┐              p ──┐                p ──▷○── ¬p
+       ╲─── p∧q          ╲─── p∨q
+  q ──╱              q ──╱
+        D 字型              楯型              三角 + 丸
+```
+
+CPU の中にはこれらが **何十億個** も並び、命令を実行しています。
+
 ### 5.3.1 ゲートの完全集合
 
 **NAND（または NOR）だけで全結合子を表現できる**。CMOS では NAND が物理的に実装しやすいので、現代の CPU は本質的に NAND の集合体です。
@@ -152,15 +165,17 @@ NAND だけで NOT を作る:    NAND だけで AND を作る:
 
 組合せ回路は「現在の入力だけ」で出力が決まる。**順序回路** はフリップフロップで状態を持つ:
 
-```
-順序回路の概念:
+```mermaid
+graph LR
+    Input[入力] --> Combo[組合せ回路]
+    State[現在状態] --> Combo
+    Combo --> Output[出力]
+    Combo --> NextState[次状態]
+    NextState -.->|クロック| FF[(フリップフロップ<br/>状態保持)]
+    FF --> State
 
-  入力 ──→ ┌────┐ ──→ 出力
-           │組合せ│
-  状態 ──→ │ 回路 │ ──→ 次状態
-           └────┘
-            ↑
-            状態保持 (FF)
+    style FF fill:#ffe0b2
+    style Combo fill:#c5e1a5
 ```
 
 これが CPU、メモリ、I/O 制御。第 9 章で詳しく扱います。

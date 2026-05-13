@@ -34,9 +34,21 @@
 
 ## 13.2 コンパイラの全体像
 
+```mermaid
+graph LR
+    Src[ソース<br/>print 'Hi'] --> Lex[字句解析<br/>トークン化]
+    Lex --> Parse[構文解析<br/>AST 構築]
+    Parse --> Sem[意味解析<br/>型検査]
+    Sem --> IR[中間表現<br/>IR]
+    IR --> Opt[最適化]
+    Opt --> Gen[コード生成]
+    Gen --> Target[機械語]
+
+    style Src fill:#c5e1a5
+    style Target fill:#ffe0b2
 ```
-ソース ─→ 字句 ─→ 構文 ─→ 意味 ─→ IR ─→ 最適化 ─→ コード生成 ─→ ターゲット
-```
+
+「**形を変えても意味を保つ**」変換器が 7 つ並んでいるイメージ。
 
 - **フロントエンド**: 字句・構文・意味解析。言語に依存。
 - **ミドルエンド**: 中間表現と最適化。言語にもターゲットにも依存しない。
@@ -84,15 +96,27 @@ int x = 42;
 ### 13.4.1 例
 
 `1 + 2 * 3` の AST:
-```
-       +
-      / \
-     1   *
-        / \
-       2   3
+
+```mermaid
+graph TD
+    Plus["+"]
+    One["1"]
+    Mult["*"]
+    Two["2"]
+    Three["3"]
+    Plus --> One
+    Plus --> Mult
+    Mult --> Two
+    Mult --> Three
+
+    style Plus fill:#ffe0b2
+    style Mult fill:#ffe0b2
+    style One fill:#c5e1a5
+    style Two fill:#c5e1a5
+    style Three fill:#c5e1a5
 ```
 
-優先順位を AST の構造で表現。
+「**先に評価するものを下に**」配置することで、優先順位が AST の構造に組み込まれます。`*` の方が `+` より深いので、先に計算される。
 
 ### 13.4.2 解析法
 

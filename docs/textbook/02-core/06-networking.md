@@ -35,6 +35,46 @@
 
 ## 11.2 階層化と参照モデル
 
+階層化の全体像:
+
+```mermaid
+graph TB
+    subgraph "送信側 (例: Web ブラウザ)"
+        A1[アプリ層: HTTP]
+        T1[トランスポート層: TCP]
+        N1[ネットワーク層: IP]
+        L1[リンク層: Ethernet/Wi-Fi]
+    end
+    subgraph "受信側 (例: Web サーバ)"
+        A2[アプリ層: HTTP]
+        T2[トランスポート層: TCP]
+        N2[ネットワーク層: IP]
+        L2[リンク層: Ethernet/Wi-Fi]
+    end
+    A1 -.->|論理的な通信| A2
+    T1 -.->|論理的な通信| T2
+    N1 -.->|論理的な通信| N2
+    L1 -->|実際の通信| L2
+
+    A1 --> T1
+    T1 --> N1
+    N1 --> L1
+    L2 --> N2
+    N2 --> T2
+    T2 --> A2
+
+    style A1 fill:#c5e1a5
+    style A2 fill:#c5e1a5
+    style T1 fill:#ffe0b2
+    style T2 fill:#ffe0b2
+    style N1 fill:#bbdefb
+    style N2 fill:#bbdefb
+    style L1 fill:#f8bbd0
+    style L2 fill:#f8bbd0
+```
+
+各層は同じ層同士で論理的に話していると思い、下の層に丸投げします。
+
 ### 11.2.1 OSI 7 層モデル
 
 | 層 | 役割 | 例 |
@@ -214,16 +254,20 @@ $ traceroute google.com
 
 #### 3 ウェイハンドシェイク
 
+```mermaid
+sequenceDiagram
+    participant C as クライアント
+    participant S as サーバ
+
+    C->>S: SYN (seq=x)<br/>「接続したい」
+    S->>C: SYN + ACK<br/>(seq=y, ack=x+1)<br/>「OK、君の番号確認」
+    C->>S: ACK (ack=y+1)<br/>「君の番号も確認」
+    Note over C,S: 接続確立 ✅
+    C->>S: データ送信開始
+    S->>C: データ受信
 ```
-クライアント                      サーバ
-  │ ── SYN, seq=x ────────→     │
-  │                              │
-  │ ←── SYN+ACK, seq=y, ack=x+1 │
-  │                              │
-  │ ── ACK, ack=y+1 ─────────→  │
-  │                              │
-   接続確立！データ送受信開始
-```
+
+「**3 回握手して挨拶**」してから本通信に入ります。これで両者が「**お互いを認識した**」と確証を得ます。
 
 #### 4 ウェイ FIN クローズ
 
@@ -263,11 +307,25 @@ $ traceroute google.com
 
 `google.com` → `216.58.196.142` の変換。
 
+```mermaid
+sequenceDiagram
+    participant User as ブラウザ
+    participant Resolver as DNS リゾルバ
+    participant Root as ルートサーバ (.)
+    participant TLD as TLD サーバ (.com)
+    participant Auth as 権威サーバ (google.com)
+
+    User->>Resolver: google.com の IP は?
+    Resolver->>Root: google.com を知ってる?
+    Root->>Resolver: .com サーバに聞いて
+    Resolver->>TLD: google.com を知ってる?
+    TLD->>Resolver: google.com の権威に聞いて
+    Resolver->>Auth: google.com の IP は?
+    Auth->>Resolver: 216.58.196.142
+    Resolver->>User: 216.58.196.142
 ```
-ルート (.) → TLD (.com) → 権威 (google.com)
-              ↓
-         IP アドレスを返す
-```
+
+電話帳のような **階層的データベース** を辿って、ドメイン名を IP に変換します。
 
 #### レコードの種類
 
