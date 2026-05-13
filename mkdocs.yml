@@ -102,3 +102,11 @@ nav:
       - textbook/03-applied/05-graphics.md
   - 第4層 選択・先端:
       - textbook/04-electives/01-overview.md
+  - 高校数学:
+      - はじめに: highschool-math/index.md
+      - 数学I: highschool-math/01-math-i.md
+      - 数学A: highschool-math/02-math-a.md
+      - 数学II: highschool-math/03-math-ii.md
+      - 数学B: highschool-math/04-math-b.md
+      - 数学III: highschool-math/05-math-iii.md
+      - 数学C: highschool-math/06-math-c.md
