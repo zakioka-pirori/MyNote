@@ -67,22 +67,30 @@
 
 本章は次の 7 つのテーマを扱います。
 
-```
-+-------------------------------------------------------+
-|                    離散数学の全体像                    |
-+-------------------------------------------------------+
-|                                                       |
-|   [論理]──────────[集合]──────────[関係・写像]         |
-|     │              │                │                │
-|     └──────────────┼────────────────┘                │
-|                    │                                  |
-|                  [証明]                               │
-|                    │                                  |
-|     ┌──────────────┼─────────────────────┐            │
-|     │              │                     │            │
-|  [組合せ論]    [グラフ理論]            [数論]          │
-|                                                       |
-+-------------------------------------------------------+
+```mermaid
+graph TD
+    Logic[論理]
+    Sets[集合]
+    Maps[関係・写像]
+    Proofs[証明]
+    Comb[組合せ論]
+    Graph[グラフ理論]
+    Num[数論]
+
+    Logic --- Sets
+    Sets --- Maps
+    Logic --- Proofs
+    Sets --- Proofs
+    Maps --- Proofs
+    Proofs --- Comb
+    Proofs --- Graph
+    Proofs --- Num
+    Sets --- Comb
+
+    classDef foundation fill:#e1f5ff,stroke:#0277bd
+    classDef application fill:#fff4e1,stroke:#f57c00
+    class Logic,Sets,Maps foundation
+    class Comb,Graph,Num application
 ```
 
 これらは互いに関連しあっています。たとえば「グラフを彩色する場合の数」を求めるには、グラフ理論と組合せ論の両方が必要です。「ある規則を満たす数の列を数える」には数論と組合せ論が交差します。最初は別々に学び、終盤で繋がりが見えると面白くなります。
@@ -868,13 +876,23 @@ print(both(3))   # double(inc(3)) = double(4) = 8
 
 イメージはドミノ倒し:
 
-```
-P(1) ── 倒れる ──→ P(2) ── 倒れる ──→ P(3) ── 倒れる ──→ ...
+```mermaid
+graph LR
+    P1["P(1)<br/>✅ 倒す"] --> P2["P(2)<br/>連鎖"]
+    P2 --> P3["P(3)<br/>連鎖"]
+    P3 --> P4["P(4)<br/>連鎖"]
+    P4 --> Pn["...<br/>すべて倒れる"]
 
-基底:     最初のドミノが倒れる
-帰納段階: ドミノは隣を倒すよう並んでいる
-結論:     すべてのドミノが倒れる
+    style P1 fill:#ffeb3b
+    style P2 fill:#c5e1a5
+    style P3 fill:#c5e1a5
+    style P4 fill:#c5e1a5
+    style Pn fill:#c5e1a5
 ```
+
+- 基底 = **最初のドミノが倒れる**
+- 帰納段階 = **ドミノが隣を倒すよう並んでいる**
+- 結論 = **すべてのドミノが倒れる**
 
 **例題 1**: 「$1 + 2 + 3 + \cdots + n = \dfrac{n(n+1)}{2}$」を示せ。
 
@@ -1092,6 +1110,24 @@ $$30 - \lfloor 30/2 \rfloor - \lfloor 30/3 \rfloor - \lfloor 30/5 \rfloor + \lfl
 - 地図: 街がノード、道路が辺
 - Web: ページがノード、リンクが辺
 - Git: コミットがノード、親子関係が辺
+
+SNS の友達関係を可視化するとこんなイメージ:
+
+```mermaid
+graph LR
+    Alice((Alice))
+    Bob((Bob))
+    Carol((Carol))
+    Dave((Dave))
+    Eve((Eve))
+
+    Alice --- Bob
+    Alice --- Carol
+    Bob --- Carol
+    Bob --- Dave
+    Carol --- Eve
+    Dave --- Eve
+```
 - ファイル依存関係: モジュールがノード、import が辺
 - 化学: 原子がノード、結合が辺
 
@@ -1117,14 +1153,21 @@ $$30 - \lfloor 30/2 \rfloor - \lfloor 30/3 \rfloor - \lfloor 30/5 \rfloor + \lfl
 - **木 (tree)**: 連結で閉路のないグラフ。
 - **森 (forest)**: 閉路のない（連結とは限らない）グラフ。
 
-```
-木の例:
-       根
-       │
-    ┌──┴──┐
-    A      B
-    │     ┌┴┐
-    C     D  E
+木の構造の例:
+
+```mermaid
+graph TD
+    Root((根))
+    A((A))
+    B((B))
+    C((C))
+    D((D))
+    E((E))
+    Root --> A
+    Root --> B
+    A --> C
+    B --> D
+    B --> E
 ```
 
 ファイルシステム、HTML の DOM、組織図、家系図、二分探索木 (BST)、AST はすべて木です。

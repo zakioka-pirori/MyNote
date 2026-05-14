@@ -77,6 +77,26 @@ F → ( E ) | num
 
 Noam Chomsky が 1956 年に提案した、文法と機械の対応:
 
+```mermaid
+graph TD
+    T0[Type 0: 帰納可算<br/>チューリングマシン<br/>= 計算可能なすべて]
+    T1[Type 1: 文脈依存<br/>線形拘束 TM]
+    T2[Type 2: 文脈自由 CFG<br/>プッシュダウン<br/>プログラム構文]
+    T3[Type 3: 正規<br/>有限オートマトン<br/>正規表現]
+
+    T0 --> T1
+    T1 --> T2
+    T2 --> T3
+
+    style T0 fill:#ffcdd2
+    style T1 fill:#ffe0b2
+    style T2 fill:#fff9c4
+    style T3 fill:#c5e1a5
+```
+
+下に行くほど表現力が弱く、判定が簡単。上に行くほど強力だが判定が難しくなります。
+
+
 | 型 | 文法 | 言語 | 認識する機械 | 例 |
 |---|---|---|---|---|
 | 0 | 制限なし | 帰納可算 | チューリングマシン | プログラム全般 |
@@ -103,12 +123,18 @@ Noam Chomsky が 1956 年に提案した、文法と機械の対応:
 
 #### 例: 「0 を偶数個含む」DFA
 
-```
-   入力 1
-   ┌─→─┐
-  ●0   1●     ← 状態 0: 偶数個 (受理), 状態 1: 奇数個
-   ↑    ↓
-   入力 0
+```mermaid
+stateDiagram-v2
+    direction LR
+    [*] --> Even
+    Even --> Odd: 入力 0
+    Odd --> Even: 入力 0
+    Even --> Even: 入力 1
+    Odd --> Odd: 入力 1
+    Even --> [*]: 受理
+
+    note left of Even: 0 を偶数個 (受理)
+    note right of Odd: 0 を奇数個
 ```
 
 ```
