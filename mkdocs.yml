@@ -73,6 +73,10 @@ markdown_extensions:
 extra_javascript:
   - javascripts/mathjax.js
   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+  - javascripts/progress.js
+
+extra_css:
+  - stylesheets/extra.css
 
 extra:
   social:
@@ -81,6 +85,7 @@ extra:
 
 nav:
   - ホーム: index.md
+  - 学習の記録: progress.md
   - カリキュラム概観: cs-curriculum.md
   - 第1層 数学・論理基礎:
       - textbook/01-foundations/01-discrete-math.md
