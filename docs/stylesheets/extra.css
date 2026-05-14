@@ -162,3 +162,81 @@
   margin-top: 0.6rem;
   line-height: 1.7;
 }
+
+/* 端末間同期パネル */
+.mynote-sync {
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 6px;
+  margin-bottom: 1.8rem;
+  background: var(--md-code-bg-color);
+}
+
+.mynote-sync > summary {
+  cursor: pointer;
+  padding: 0.7rem 1rem;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.mynote-sync-body {
+  padding: 0 1rem 1rem;
+  font-size: 0.85rem;
+  line-height: 1.7;
+}
+
+.mynote-sync-body ol {
+  margin-left: 1.2rem;
+}
+
+.mynote-token-input {
+  width: 100%;
+  padding: 0.5rem 0.6rem;
+  margin: 0.3rem 0 0.6rem;
+  border: 1px solid var(--md-default-fg-color--lighter);
+  border-radius: 4px;
+  font-family: var(--md-code-font-family, monospace);
+  font-size: 0.85rem;
+  box-sizing: border-box;
+  background: var(--md-default-bg-color);
+  color: var(--md-default-fg-color);
+}
+
+.mynote-sync-body button {
+  background: var(--md-primary-fg-color);
+  color: var(--md-primary-bg-color);
+  border: none;
+  border-radius: 4px;
+  padding: 0.45rem 0.9rem;
+  cursor: pointer;
+  font-size: 0.82rem;
+  margin: 0.2rem 0.3rem 0.2rem 0;
+}
+
+.mynote-sync-body button:hover {
+  opacity: 0.88;
+}
+
+.mynote-sync-body button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+#mynote-sync-off {
+  background: var(--md-default-fg-color--lightest);
+  color: var(--md-default-fg-color);
+}
+
+.mynote-sync-status {
+  font-weight: 700;
+}
+
+.mynote-sync-msg {
+  margin-top: 0.5rem;
+  font-size: 0.82rem;
+  color: #2e7d32;
+  min-height: 1.2em;
+}
+
+.mynote-sync-msg.mynote-sync-err {
+  color: #c62828;
+}
